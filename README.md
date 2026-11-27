@@ -64,12 +64,19 @@ An expression becomes `(lambda subtotal, shipping: subtotal + shipping)(subtotal
 
 See more details in [docs/extract-iife.md](docs/extract-iife.md).
 
+### Batch
+
+Batch runs several renames and extractions together, with every location referring to the original files.
+It is all-or-nothing by default, refuses actions whose edits overlap or that change each other's meaning, and accepts swaps such as `a→b` with `b→a`.
+See more details in [the command line](docs/command-line.md#batch).
+
 ## Using it
 
 The package is not published yet; from a clone, run `./build-and-test` once, then:
 
 ```shell
 .venv/bin/riktig-py rename --workspace . --file src/order.py --at 12:5 --new-name count
+.venv/bin/riktig-py batch --workspace . actions.jsonl --apply
 ```
 
 See [the command line](docs/command-line.md) for the options and exit codes, [the library](docs/library.md) for using it from code, and [refusals and limitations](docs/limitations.md).

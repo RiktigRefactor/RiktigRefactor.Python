@@ -83,3 +83,56 @@ def test_markers_in_the_file_select_instead_of_at(project, capsys, monkeypatch):
 
 def test_without_selection_or_markers_is_an_error(project):
     assert cli.main(["rename", "--workspace", str(project), "--new-name", "x"]) == cli.EXIT_ERROR
+
+
+BATCH_PROGRAM = "def f(a, b):\n    return a - b\n"
+
+
+def write_batch(tmp_path, *requests):
+    (tmp_path / "app.py").write_text(BATCH_PROGRAM, encoding="utf-8", newline="")
+    actions = tmp_path / "actions.jsonl"
+    lines = []
+    for column, new_name in requests:
+        position = {"line": 1, "column": column}
+        location = {"file": "app.py", "start": position, "end": position}
+        lines.append(json.dumps({"refactoring": "rename", "location": location, "options": {"newName": new_name}}))
+    actions.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return ["batch", "--workspace", str(tmp_path), str(actions)]
+
+
+def test_batch_previews_and_applies_a_swap(tmp_path, capsys):
+    arguments = write_batch(tmp_path, (7, "b"), (10, "a"))
+    assert cli.main(arguments) == cli.EXIT_SUCCESS
+    assert "+def f(b, a):\n+    return b - a\n" in capsys.readouterr().out
+    assert (tmp_path / "app.py").read_text() == BATCH_PROGRAM
+    assert cli.main([*arguments, "--apply"]) == cli.EXIT_SUCCESS
+    assert (tmp_path / "app.py").read_text() == "def f(b, a):\n    return b - a\n"
+
+
+def test_atomic_batch_with_a_conflict_applies_nothing(tmp_path, capsys):
+    arguments = write_batch(tmp_path, (7, "c"), (10, "c"))
+    assert cli.main([*arguments, "--apply"]) == cli.EXIT_REFUSED
+    assert "line 2 (conflicts with line 1): refused [batch-semantic-conflict]" in capsys.readouterr().err
+    assert (tmp_path / "app.py").read_text() == BATCH_PROGRAM
+
+
+def test_best_effort_batch_applies_the_actions_without_conflict(tmp_path):
+    arguments = write_batch(tmp_path, (7, "c"), (10, "c"))
+    assert cli.main([*arguments, "--best-effort", "--apply"]) == cli.EXIT_REFUSED
+    assert (tmp_path / "app.py").read_text() == "def f(c, b):\n    return c - b\n"
+
+
+def test_batch_json_prints_the_batch_result(tmp_path, capsys):
+    arguments = write_batch(tmp_path, (7, "c"), (10, "c"))
+    assert cli.main([*arguments, "--best-effort", "--json"]) == cli.EXIT_REFUSED
+    printed = json.loads(capsys.readouterr().out)
+    assert printed["status"] == "partial"
+    assert [action["status"] for action in printed["results"]] == ["success", "refused"]
+
+
+def test_batch_with_a_bad_line_or_missing_file_is_an_error(tmp_path, capsys):
+    arguments = write_batch(tmp_path, (7, "c"))
+    (tmp_path / "actions.jsonl").write_text("{oops\n", encoding="utf-8")
+    assert cli.main(arguments) == cli.EXIT_ERROR
+    assert "line 1" in capsys.readouterr().err
+    assert cli.main([*arguments[:-1], str(tmp_path / "missing.jsonl")]) == cli.EXIT_ERROR

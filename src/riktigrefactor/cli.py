@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from riktigrefactor import markers
+from riktigrefactor.batch import BatchRequestError, BatchResult, BatchStatus, parse_actions, run_batch
 from riktigrefactor.diff import unified_diff
 from riktigrefactor.extract_iife import extract_iife
 from riktigrefactor.protocol import (
@@ -67,6 +68,15 @@ def build_argument_parser() -> argparse.ArgumentParser:
     extract_command = commands.add_parser("extract-iife", help="wrap a selection in an immediately-invoked function")
     add_common_arguments(extract_command)
     extract_command.add_argument("--range", help="the selection, LINE:COLUMN-LINE:COLUMN; omit it to use markers in the file")
+
+    batch_command = commands.add_parser("batch", help="run several refactorings together, from a JSON Lines file")
+    batch_command.add_argument("--workspace", default=".", help="the project root directory (default: the current directory)")
+    batch_command.add_argument("actions", help="the JSON Lines file of requests, with locations in the original files")
+    mode = batch_command.add_mutually_exclusive_group()
+    mode.add_argument("--atomic", action="store_true", help="apply nothing if any action is refused (the default)")
+    mode.add_argument("--best-effort", action="store_true", help="apply the actions that succeed without conflict")
+    batch_command.add_argument("--apply", action="store_true", help="write the changes to disk instead of printing a diff")
+    batch_command.add_argument("--json", action="store_true", help="print the batch result as JSON instead of a diff")
     return parser
 
 
@@ -120,8 +130,53 @@ def _describe_refusal(result: Result) -> str:
     return "\n".join(lines)
 
 
+def _describe_batch_refusals(result: BatchResult) -> str:
+    lines = []
+    for action in result.actions:
+        if isinstance(action.result, Success):
+            continue
+        conflicts = ""
+        if action.conflicts_with:
+            conflicts = f" (conflicts with line {', '.join(str(line) for line in action.conflicts_with)})"
+        for description in _describe_refusal(action.result).split("\n"):
+            lines.append(f"line {action.line}{conflicts}: {description}")
+    return "\n".join(lines)
+
+
+def _main_batch(arguments: argparse.Namespace) -> int:
+    try:
+        workspace = Workspace.load(arguments.workspace)
+        actions_text = Path(arguments.actions).read_text(encoding="utf-8")
+        actions = parse_actions(actions_text, workspace)
+        result = run_batch(actions, workspace, best_effort=arguments.best_effort)
+    except (OSError, BatchRequestError, RefusalError) as error:
+        print(f"error: {error}", file=sys.stderr)
+        return EXIT_ERROR
+    if arguments.json:
+        print(json.dumps(result.to_json(), indent=2, ensure_ascii=False))
+    else:
+        refusals = _describe_batch_refusals(result)
+        if refusals:
+            print(refusals, file=sys.stderr)
+    new_texts = workspace.apply_edits(result.edits)
+    if arguments.apply:
+        workspace.write_texts(new_texts)
+        if not arguments.json and new_texts:
+            print(f"applied changes to {len(new_texts)} file(s)")
+    elif not arguments.json:
+        original_texts = {path: workspace.files[path].text for path in new_texts}
+        sys.stdout.write(unified_diff(original_texts, new_texts))
+        for warning in result.warnings:
+            print(f"warning [{warning.code}]: {warning.message}", file=sys.stderr)
+    if result.status == BatchStatus.SUCCESS:
+        return EXIT_SUCCESS
+    return EXIT_REFUSED
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_argument_parser().parse_args(argv)
+    if arguments.command == "batch":
+        return _main_batch(arguments)
     try:
         original, workspace, result = _run(arguments)
     except (UsageError, RefusalError) as error:
