@@ -1,0 +1,9 @@
+{
+  "refuse": "batch-semantic-conflict",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.1 Binding of names",
+    "Python §8.7 Function definitions"
+  ],
+  "notes": "Each rename is fine alone, but together they would merge two parameters into one name."
+}

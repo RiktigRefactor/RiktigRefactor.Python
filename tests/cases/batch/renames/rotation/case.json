@@ -1,0 +1,6 @@
+{
+  "spec": [
+    "Python §4.2.1 Binding of names"
+  ],
+  "notes": "Three module-level names rotate; no rename is valid alone."
+}

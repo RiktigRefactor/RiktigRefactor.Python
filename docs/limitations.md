@@ -58,6 +58,16 @@ See [limitations](https://github.com/RiktigRefactor/riktigrefactor.spec/blob/mai
 - Comment lines above the first selected statement, and after the last, stay where they are; comments between and trailing comments move with the statements.
 - Generic functions and classes (type parameters), annotations, type aliases, and match patterns are not supported positions, and neither is anything inside an f-string or a template string (the `=` specifier shows the source text).
 
+## Batch
+
+- Renames are applied first, and verified together on the original files; then each Extract IIFE runs again, in file and position order, on the result of the edits before it, with all its checks and its own verification.
+  So the combined result is checked step by step rather than by one final comparison with the original files.
+- A selection that contains another action's extraction, or that overlaps it, is refused (`batch-edits-overlap`), even where applying one after the other would be fine.
+- Two renames of the same name are refused as an overlap, even when they ask for the same new name.
+- A rename that is refused alone because its new name collides is accepted only when the renames it shares names with (as in a swap or a rotation) make the combination pass; otherwise it keeps its own `binding-would-change`.
+- When several renames together fail the re-binding check, the later ones are refused one by one, so which action of an interacting group is refused depends on the order of the lines.
+- An extraction's generated name (`_extractedN`) can differ from the one it gets alone, because another extraction in the same scope may take a number first.
+
 ## The semantic model
 
 - The scope analysis is the tool's own, written from the Language Reference and cross-checked against CPython's `symtable`; it refuses a file where the two disagree.

@@ -1,0 +1,2 @@
+{"refactoring":"extract-iife","location":{"file":"main.py","start":{"line":5,"column":5},"end":{"line":5,"column":39}},"options":{}}
+{"refactoring":"extract-iife","location":{"file":"main.py","start":{"line":2,"column":5},"end":{"line":3,"column":24}},"options":{}}

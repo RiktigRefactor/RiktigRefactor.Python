@@ -9,8 +9,10 @@ import ast
 import io
 import tokenize
 
-from riktigrefactor.extract_iife import locate_selection
-from riktigrefactor.protocol import ExtractIifeRequest, Position, RenameRequest
+from riktigrefactor.batch import BatchAction
+from riktigrefactor.extract_iife import extract_iife, locate_selection
+from riktigrefactor.protocol import ExtractIifeRequest, Position, RefusalError, RenameRequest, Success, TextEdit
+from riktigrefactor.rename import plan_rename
 from riktigrefactor.workspace import Workspace
 
 
@@ -90,3 +92,33 @@ def naive_extract_iife(workspace: Workspace, request: ExtractIifeRequest) -> dic
     body = first + "".join("\n" + ("    " + line if line.strip() else line) for line in rest)
     replacement = f"def _extracted1({arguments}):\n{prefix}    {body}\n{prefix}_extracted1({arguments})"
     return {path: text[: selection.start] + replacement + text[selection.end :]}
+
+
+def naive_batch(workspace: Workspace, actions: list[BatchAction]) -> dict[str, str]:
+    """Runs each action alone on the snapshot, a rename without its re-binding check, and applies the union of the edits.
+
+    An edit that overlaps one already taken is skipped. Nothing maps locations or checks how the actions interact.
+    """
+    taken: list[TextEdit] = []
+    for action in actions:
+        request = action.request
+        if isinstance(request, RenameRequest):
+            try:
+                edits = plan_rename(request, workspace).edits
+            except RefusalError:
+                continue
+        elif isinstance(request, ExtractIifeRequest):
+            result = extract_iife(request, workspace)
+            if not isinstance(result, Success):
+                continue
+            edits = result.edits
+        else:
+            continue
+        for edit in edits:
+            if not any(_edits_overlap(edit, other) for other in taken):
+                taken.append(edit)
+    return workspace.apply_edits(taken)
+
+
+def _edits_overlap(first: TextEdit, second: TextEdit) -> bool:
+    return first.file == second.file and first.start < second.end and second.start < first.end

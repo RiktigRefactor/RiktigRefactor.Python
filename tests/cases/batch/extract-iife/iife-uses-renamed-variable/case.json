@@ -1,0 +1,8 @@
+{
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §6.14 Lambdas",
+    "Python §4.2.1 Binding of names"
+  ],
+  "notes": "The extracted lambda must pass and use the new name of a parameter that another action renames."
+}

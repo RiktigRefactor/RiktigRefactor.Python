@@ -1,0 +1,2 @@
+{"refactoring":"rename","location":{"file":"main.py","start":{"line":1,"column":1},"end":{"line":1,"column":1}},"options":{"newName":"amount"}}
+{"refactoring":"rename","location":{"file":"main.py","start":{"line":3,"column":5},"end":{"line":3,"column":5}},"options":{"newName":"running_total"}}

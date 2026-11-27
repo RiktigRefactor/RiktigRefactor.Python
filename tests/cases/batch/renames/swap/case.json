@@ -1,0 +1,7 @@
+{
+  "spec": [
+    "Python §4.2.1 Binding of names",
+    "Python §8.7 Function definitions"
+  ],
+  "notes": "A swap is valid under snapshot semantics, though each rename alone would merge the two parameters."
+}

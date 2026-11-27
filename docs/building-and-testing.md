@@ -21,6 +21,9 @@ Programs run with `python -s -B main.py` in a temporary copy of the directory, s
 
 `case.json` fields: `options` (such as `{"newName": "count"}`), `refuse` (the expected refusal code), `naiveShouldFail`, `warnings`, `spec`, and `notes`.
 
+Batch cases, under `tests/cases/batch/`, have no markers: their `actions.jsonl` holds one request per line, with locations in `input/`, and `refuse` is the code of the first refused action.
+Their naive implementation runs each action alone and applies the union of the edits that do not overlap.
+
 The selection is marked in the input with comments, which are removed before the refactoring runs:
 
 ```python

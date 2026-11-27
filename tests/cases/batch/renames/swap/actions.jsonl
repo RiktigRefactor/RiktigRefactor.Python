@@ -1,0 +1,2 @@
+{"refactoring":"rename","location":{"file":"main.py","start":{"line":1,"column":14},"end":{"line":1,"column":14}},"options":{"newName":"height"}}
+{"refactoring":"rename","location":{"file":"main.py","start":{"line":1,"column":21},"end":{"line":1,"column":21}},"options":{"newName":"width"}}

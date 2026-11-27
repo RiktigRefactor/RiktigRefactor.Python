@@ -2,6 +2,7 @@
 
 For each case: (1) the input program passes; (2) the refactoring gives the expected outcome;
 (3) its output equals expected/ exactly; (4) the output program passes.
+Cases under tests/cases/batch have no markers: their actions.jsonl holds the requests, with locations in input/.
 `RIKTIG_WRITE_EXPECTED=1` writes expected/ from the actual output; review it before keeping it.
 """
 
@@ -16,9 +17,10 @@ from typing import Any
 
 import pytest
 
-from naive import naive_extract_iife, naive_rename
+from naive import naive_batch, naive_extract_iife, naive_rename
 from program_runner import run_program
 from riktigrefactor import markers
+from riktigrefactor.batch import BatchStatus, parse_actions, run_batch
 from riktigrefactor.extract_iife import extract_iife
 from riktigrefactor.protocol import ExtractIifeRequest, Refused, RenameRequest, Result, Success
 from riktigrefactor.rename import rename
@@ -92,9 +94,14 @@ def strip_markers_from_files(files: dict[str, str]) -> tuple[dict[str, str], str
     return stripped_files, found[0][0], found[0][1]
 
 
+BATCH = "batch"
+
+
 def check_metadata(metadata: dict[str, Any], case_directory: Path) -> None:
     refactoring = case_directory.relative_to(CASES_ROOT).parts[0]
-    assert refactoring in REFACTORINGS, f"unknown refactoring directory {refactoring}"
+    assert refactoring in REFACTORINGS or refactoring == BATCH, f"unknown refactoring directory {refactoring}"
+    if refactoring == BATCH:
+        assert (case_directory / "actions.jsonl").is_file(), "a batch case has an actions.jsonl"
     assert metadata.get("spec"), "case.json needs a non-empty spec list of language reference citations"
     for citation in metadata["spec"]:
         assert CITATION.match(citation), f"{citation!r} is not 'Python §<number> <title>' or 'Python feature: <name>'"
@@ -107,7 +114,6 @@ def check_metadata(metadata: dict[str, Any], case_directory: Path) -> None:
 def test_case(case_directory: Path, tmp_path: Path) -> None:
     metadata = json.loads((case_directory / "case.json").read_text(encoding="utf-8"))
     check_metadata(metadata, case_directory)
-    refactoring = REFACTORINGS[case_directory.relative_to(CASES_ROOT).parts[0]]
     python_path = metadata.get("pythonPath", [])
 
     input_files = read_tree(case_directory / "input")
@@ -116,6 +122,10 @@ def test_case(case_directory: Path, tmp_path: Path) -> None:
     input_outcome = run_program(input_directory, python_path)
     assert input_outcome.passed, f"the input program fails (a bad test):\n{input_outcome.output}"
 
+    if case_directory.relative_to(CASES_ROOT).parts[0] == BATCH:
+        run_batch_case(case_directory, metadata, input_files, input_directory, tmp_path)
+        return
+    refactoring = REFACTORINGS[case_directory.relative_to(CASES_ROOT).parts[0]]
     unmarked_files, selection_file, selection = strip_markers_from_files(input_files)
     workspace = Workspace.from_texts(
         input_directory, {path: text for path, text in unmarked_files.items() if path.endswith(".py")}
@@ -145,5 +155,37 @@ def test_case(case_directory: Path, tmp_path: Path) -> None:
         naive_texts = refactoring.naive(workspace, request)
         naive_directory = tmp_path / "naive"
         write_tree(naive_directory, {**unmarked_files, **naive_texts})
+        naive_outcome = run_program(naive_directory, python_path)
+        assert not naive_outcome.passed, "the naive implementation passes this case, so its assertions cannot fail"
+
+
+def run_batch_case(
+    case_directory: Path, metadata: dict[str, Any], input_files: dict[str, str], input_directory: Path, tmp_path: Path
+) -> None:
+    python_path = metadata.get("pythonPath", [])
+    workspace = Workspace.from_texts(input_directory, {path: text for path, text in input_files.items() if path.endswith(".py")})
+    actions = parse_actions((case_directory / "actions.jsonl").read_text(encoding="utf-8"), workspace)
+    result = run_batch(actions, workspace)
+
+    if "refuse" in metadata:
+        assert result.status == BatchStatus.REFUSED, f"expected the refusal {metadata['refuse']}, got {result}"
+        refused = [action.result for action in result.actions if isinstance(action.result, Refused)]
+        assert refused[0].reasons[0].code == metadata["refuse"], f"got {refused}"
+        assert result.edits == ()
+    else:
+        assert result.status == BatchStatus.SUCCESS, f"expected success, got {result}"
+        actual_files = {**input_files, **workspace.apply_edits(result.edits)}
+        if WRITE_EXPECTED:
+            write_tree(case_directory / "expected", actual_files)
+        expected_files = read_tree(case_directory / "expected")
+        assert actual_files == expected_files, "the output differs from expected/"
+        output_directory = tmp_path / "output"
+        write_tree(output_directory, actual_files)
+        output_outcome = run_program(output_directory, python_path)
+        assert output_outcome.passed, f"the refactored program fails (a correctness bug):\n{output_outcome.output}"
+
+    if metadata.get("naiveShouldFail"):
+        naive_directory = tmp_path / "naive"
+        write_tree(naive_directory, {**input_files, **naive_batch(workspace, actions)})
         naive_outcome = run_program(naive_directory, python_path)
         assert not naive_outcome.passed, "the naive implementation passes this case, so its assertions cannot fail"

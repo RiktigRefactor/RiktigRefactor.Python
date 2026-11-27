@@ -48,4 +48,6 @@ Refactorings add their own codes to the table, each prefixed with the refactorin
 | `parameter-keyword-use-possible` | Rename: the parameter may be passed by keyword by a call that cannot be traced (a method, lambda, decorated function, or function used as a value), or by a call that uses `**` unpacking. |
 | `dunder-all-not-analyzable` | Rename: the module's `__all__` is not a list or tuple of plain string literals changed with `=`, `+=`, `.append`, and `.extend`, so the strings that name the renamed name cannot be found. |
 | `string-names-symbol` | Rename: a string or template string that the program can observe as source text names the symbol: an f-string `=` field whose text cannot be copied safely, a template string interpolation, or a string annotation. |
+| `batch-edits-overlap` | Batch: the action edits text that an earlier action of the batch also edits (two renames of the same name, or one extraction inside another). A rename inside the text that an Extract IIFE replaces is not an overlap. |
+| `batch-semantic-conflict` | Batch: the action is fine alone, but together with earlier actions of the batch it would change what a name refers to (such as `a→c` and `b→c` in one scope), or Extract IIFE refuses after their edits. |
 | `internal-verification-failed` | The tool's own check of its result failed. This is a bug in the tool; please report it. |

@@ -18,7 +18,7 @@ Edits are text-span replacements computed from `ast` positions, so trivia outsid
 - `semantics.py`: the binding model; every name occurrence and the symbol it binds to.
   See [docs/semantic-model.md](docs/semantic-model.md).
 - `verification.py`: re-parse, compile, and the re-binding check that every refactoring runs before returning edits.
-- `rename.py` and `extract_iife.py`: the refactorings.
+- `rename.py` and `extract_iife.py`: the refactorings; `batch.py`: batch mode, which runs them together.
 - `cli.py`: the `riktig-py` command; `markers.py`: test selection markers; `diff.py`: unified diffs.
 
 Decisions already made:

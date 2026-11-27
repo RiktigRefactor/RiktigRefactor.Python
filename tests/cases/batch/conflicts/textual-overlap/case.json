@@ -1,0 +1,7 @@
+{
+  "refuse": "batch-edits-overlap",
+  "spec": [
+    "Python §4.2.1 Binding of names"
+  ],
+  "notes": "Both actions rename the same variable, so they edit the same text."
+}
