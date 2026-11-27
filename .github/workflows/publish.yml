@@ -1,0 +1,88 @@
+name: publish
+
+# Push to main -> prerelease (GitHub prerelease + PyPI X.Y.ZaN).
+# Manual dispatch with a version -> real release (PyPI X.Y.Z + GitHub release).
+# Publishing is skipped until repo variable PUBLISH_ENABLED=true (set after the
+# CLI is implemented and PyPI trusted publishing is configured).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Real release version, e.g. 0.2.0 (leave empty for a prerelease)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      prerelease: ${{ steps.ver.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compute version
+        id: ver
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          base=$(python -c "import tomllib;print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          if [ -n "$INPUT_VERSION" ]; then
+            v="$INPUT_VERSION"; pre=false
+          else
+            v="${base}a${GITHUB_RUN_NUMBER}"; pre=true
+          fi
+          echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(a[0-9]+)?$' || { echo "bad version $v"; exit 1; }
+          sed -i "0,/^version = .*/s//version = \"$v\"/" pyproject.toml
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$pre" >> "$GITHUB_OUTPUT"
+      - run: python -m pip install build twine
+      - run: python -m build
+      - run: python -m twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  pypi:
+    needs: build
+    if: vars.PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: [build, pypi]
+    if: vars.PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          V: ${{ needs.build.outputs.version }}
+          PRE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          flag=""; [ "$PRE" = true ] && flag="--prerelease"
+          gh release create "v$V" dist/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "v$V" --generate-notes $flag

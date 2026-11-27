@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "riktigrefactor"
+version = "0.1.0"
+description = "Seriously safe behavior-preserving refactorings for Python."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+riktig-py = "riktigrefactor.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/RiktigRefactor/RiktigRefactor.Python"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/riktigrefactor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-p no:cacheprovider"
