@@ -1,0 +1,5 @@
+{
+  "refuse": "yield-in-selection",
+  "naiveShouldFail": true,
+  "spec": ["Python §6.2.8 Yield expressions"]
+}

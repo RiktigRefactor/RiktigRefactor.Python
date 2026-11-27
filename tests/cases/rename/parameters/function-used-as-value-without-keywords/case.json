@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "spec": [
+    "Python §8.7 Function definitions",
+    "Python §6.3.4 Calls"
+  ],
+  "notes": "No call passes x by keyword and there is no ** call, so no call can name the parameter."
+}

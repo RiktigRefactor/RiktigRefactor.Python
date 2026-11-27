@@ -1,0 +1,5 @@
+{
+  "refuse": "closure-captures-variable",
+  "naiveShouldFail": true,
+  "spec": ["Python §4.2.2 Resolution of names", "Python §6.14 Lambdas"]
+}

@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "__len__"
+  },
+  "refuse": "runtime-protocol-name",
+  "spec": [
+    "Python §2.3 Identifiers and keywords"
+  ]
+}

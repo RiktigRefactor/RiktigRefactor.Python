@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "not-renameable",
+  "spec": [
+    "Python §6.3.4 Calls"
+  ]
+}

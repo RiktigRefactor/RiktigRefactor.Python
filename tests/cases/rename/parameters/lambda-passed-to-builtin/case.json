@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "item"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §6.14 Lambdas"
+  ]
+}

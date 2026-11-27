@@ -1,0 +1,8 @@
+{
+  "refuse": "dynamic-class-namespace",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §3.3.3 Customizing class creation",
+    "Python §8.8 Class definitions"
+  ]
+}

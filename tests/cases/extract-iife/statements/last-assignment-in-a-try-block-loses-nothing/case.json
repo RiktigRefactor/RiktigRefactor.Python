@@ -1,0 +1,7 @@
+{
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.4 The try statement",
+    "Python §7.2 Assignment statements"
+  ]
+}

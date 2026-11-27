@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "attribute-not-supported",
+  "spec": [
+    "Python §8.8 Class definitions"
+  ],
+  "notes": "Every name bound in a class body is an attribute of the class."
+}

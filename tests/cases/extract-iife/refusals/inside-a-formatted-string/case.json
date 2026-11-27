@@ -1,0 +1,5 @@
+{
+  "refuse": "unsupported-position",
+  "naiveShouldFail": true,
+  "spec": ["Python §6.2.3 Literals"]
+}

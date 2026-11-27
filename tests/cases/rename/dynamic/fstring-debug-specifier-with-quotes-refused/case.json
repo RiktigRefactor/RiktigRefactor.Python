@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "zz"
+  },
+  "refuse": "string-names-symbol",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python feature: f-string = specifier"
+  ]
+}

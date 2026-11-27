@@ -1,0 +1,5 @@
+{
+  "refuse": "dynamic-scope-access",
+  "naiveShouldFail": true,
+  "spec": ["Python §4.2.6 Interaction with dynamic features"]
+}

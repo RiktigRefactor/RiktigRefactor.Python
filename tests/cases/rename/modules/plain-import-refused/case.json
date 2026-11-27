@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "m2"
+  },
+  "refuse": "not-renameable",
+  "spec": [
+    "Python §7.11 The import statement"
+  ],
+  "notes": "import config binds the module name; use \"import config as ...\" first."
+}

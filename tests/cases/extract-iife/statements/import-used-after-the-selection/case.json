@@ -1,0 +1,8 @@
+{
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §7.11 The import statement",
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The import returns its name; the check that an alias keeps its origin is told that this name is now a plain variable."
+}

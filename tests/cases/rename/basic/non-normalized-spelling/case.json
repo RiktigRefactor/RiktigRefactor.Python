@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "doc"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §2.3 Identifiers and keywords"
+  ],
+  "notes": "The ligature spelling ﬁle is the same name as file, because identifiers are NFKC-normalized."
+}

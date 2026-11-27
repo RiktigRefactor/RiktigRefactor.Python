@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "bb"
+  },
+  "refuse": "parameter-keyword-use-possible",
+  "spec": [
+    "Python §6.3.4 Calls",
+    "Python §4.2.6 Interaction with dynamic features"
+  ]
+}

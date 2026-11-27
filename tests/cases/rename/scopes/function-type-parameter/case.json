@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "Item"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.10 Type parameter lists",
+    "Python §4.2.3 Annotation scopes"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The inner reference to x would bind to the inner y."
+}

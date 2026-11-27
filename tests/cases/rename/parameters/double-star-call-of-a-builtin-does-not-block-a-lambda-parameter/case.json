@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "bb"
+  },
+  "spec": [
+    "Python §6.14 Lambdas",
+    "Python §6.3.4 Calls"
+  ]
+}

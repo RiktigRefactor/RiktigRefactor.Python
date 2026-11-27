@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "A textual rename would merge the sibling function's x and y."
+}

@@ -1,0 +1,8 @@
+{
+  "refuse": "dynamic-class-namespace",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.8 Class definitions",
+    "Python §4.2.6 Interaction with dynamic features"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "refuse": "deletes-outer-variable",
+  "naiveShouldFail": true,
+  "spec": ["Python §7.5 The del statement"]
+}

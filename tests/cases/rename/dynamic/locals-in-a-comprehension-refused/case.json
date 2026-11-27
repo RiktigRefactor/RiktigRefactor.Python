@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "dynamic-access-possible",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.6 Interaction with dynamic features",
+    "Python §6.2.6 Comprehensions"
+  ]
+}

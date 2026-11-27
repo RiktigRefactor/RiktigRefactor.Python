@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §6.3.4 Calls"
+  ],
+  "notes": "The keyword x= of g belongs to a different function."
+}

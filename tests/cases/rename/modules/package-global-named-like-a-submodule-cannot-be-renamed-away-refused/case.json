@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "other"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §7.11 The import statement"
+  ]
+}

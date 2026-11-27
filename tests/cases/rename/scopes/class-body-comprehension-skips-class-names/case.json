@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names",
+    "Python §8.8 Class definitions"
+  ],
+  "notes": "A comprehension in a class body does not see the class namespace, so its x is the global one."
+}

@@ -1,0 +1,5 @@
+{
+  "refuse": "nonlocal-or-global-write",
+  "naiveShouldFail": true,
+  "spec": ["Python §7.12 The global statement"]
+}

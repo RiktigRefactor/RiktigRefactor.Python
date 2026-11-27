@@ -1,0 +1,4 @@
+{
+  "naiveShouldFail": true,
+  "spec": ["Python §8.9 Coroutines", "Python §8.7 Function definitions"]
+}

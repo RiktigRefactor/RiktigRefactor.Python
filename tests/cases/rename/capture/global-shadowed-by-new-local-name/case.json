@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "x"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "Renaming the local y to x would hide the global x that f reads."
+}

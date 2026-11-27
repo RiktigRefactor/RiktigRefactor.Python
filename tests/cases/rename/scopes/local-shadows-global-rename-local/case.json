@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The global x and its read in g are different symbols and are not renamed."
+}

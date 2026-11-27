@@ -1,0 +1,5 @@
+{
+  "refuse": "walrus-crosses-boundary",
+  "naiveShouldFail": true,
+  "spec": ["Python §6.12 Assignment expressions"]
+}

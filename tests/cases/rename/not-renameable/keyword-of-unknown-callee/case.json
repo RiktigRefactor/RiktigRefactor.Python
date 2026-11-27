@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "keyword-callee-unknown",
+  "spec": [
+    "Python §6.3.4 Calls"
+  ]
+}

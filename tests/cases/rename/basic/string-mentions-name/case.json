@@ -1,0 +1,12 @@
+{
+  "options": {
+    "newName": "amount"
+  },
+  "warnings": [
+    "string-matches-name"
+  ],
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "Strings are not changed; the tool warns about them."
+}

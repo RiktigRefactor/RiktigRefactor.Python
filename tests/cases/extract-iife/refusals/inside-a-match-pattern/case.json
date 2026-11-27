@@ -1,0 +1,5 @@
+{
+  "refuse": "unsupported-position",
+  "naiveShouldFail": true,
+  "spec": ["Python §8.6 The match statement"]
+}

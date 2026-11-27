@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "z"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §6.13 Assignment expressions",
+    "Python §4.2.2 Resolution of names"
+  ]
+}

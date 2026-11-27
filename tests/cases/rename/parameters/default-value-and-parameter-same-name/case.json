@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "n"
+  },
+  "spec": [
+    "Python §8.7 Function definitions",
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The cursor is on the default value, which reads the global size, not the parameter."
+}

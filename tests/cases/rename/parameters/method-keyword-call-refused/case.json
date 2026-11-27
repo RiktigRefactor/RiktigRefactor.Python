@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "k"
+  },
+  "refuse": "parameter-keyword-use-possible",
+  "spec": [
+    "Python §8.7 Function definitions",
+    "Python §6.3.4 Calls"
+  ],
+  "notes": "The call obj.add(amount=2) cannot be traced to the method."
+}

@@ -1,0 +1,12 @@
+{
+  "options": {
+    "newName": "len"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.5 Builtins and restricted execution",
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The renamed local would hide the builtin len."
+}

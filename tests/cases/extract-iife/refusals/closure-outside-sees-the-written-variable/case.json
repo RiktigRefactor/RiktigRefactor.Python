@@ -1,0 +1,5 @@
+{
+  "refuse": "closure-observes-written-variable",
+  "naiveShouldFail": true,
+  "spec": ["Python §4.2.2 Resolution of names", "Python §8.7 Function definitions"]
+}

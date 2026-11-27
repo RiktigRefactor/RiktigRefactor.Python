@@ -1,0 +1,5 @@
+{
+  "refuse": "possibly-unbound-variable",
+  "naiveShouldFail": true,
+  "spec": ["Python §4.2.2 Resolution of names", "Python §6.13 Conditional expressions"]
+}

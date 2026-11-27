@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "b"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.7 Function definitions"
+  ],
+  "notes": "Two parameters would have the same name."
+}

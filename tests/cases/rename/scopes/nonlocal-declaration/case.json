@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "total"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §7.14 The nonlocal statement"
+  ]
+}

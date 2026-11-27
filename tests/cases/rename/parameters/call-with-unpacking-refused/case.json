@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "parameter-keyword-use-possible",
+  "spec": [
+    "Python §6.3.4 Calls"
+  ],
+  "notes": "A ** call may pass x by keyword."
+}

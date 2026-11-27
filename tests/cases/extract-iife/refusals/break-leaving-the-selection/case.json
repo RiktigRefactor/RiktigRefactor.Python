@@ -1,0 +1,5 @@
+{
+  "refuse": "non-local-control-flow",
+  "naiveShouldFail": true,
+  "spec": ["Python §7.9 The break statement", "Python §8.3 The for statement"]
+}

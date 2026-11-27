@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "case"
+  },
+  "spec": [
+    "Python §8.6 The match statement",
+    "Python §2.3 Identifiers and keywords"
+  ]
+}

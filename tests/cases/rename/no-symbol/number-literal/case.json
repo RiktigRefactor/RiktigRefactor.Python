@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "no-symbol",
+  "spec": [
+    "Python §2.3 Identifiers and keywords"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "n"
+  },
+  "spec": [
+    "Python §7.2.1 Augmented assignment statements",
+    "Python §7.2.2 Annotated assignment statements"
+  ]
+}

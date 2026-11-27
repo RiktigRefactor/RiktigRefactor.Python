@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "i"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names",
+    "Python §6.2.4 Displays for lists, sets and dictionaries"
+  ]
+}

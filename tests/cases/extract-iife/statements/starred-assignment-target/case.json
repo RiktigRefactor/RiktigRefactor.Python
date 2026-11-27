@@ -1,0 +1,4 @@
+{
+  "naiveShouldFail": true,
+  "spec": ["Python §7.2 Assignment statements", "Python §8.7 Function definitions"]
+}

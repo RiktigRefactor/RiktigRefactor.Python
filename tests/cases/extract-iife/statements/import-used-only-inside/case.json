@@ -1,0 +1,4 @@
+{
+  "naiveShouldFail": false,
+  "spec": ["Python §7.11 The import statement", "Python §4.2.2 Resolution of names"]
+}

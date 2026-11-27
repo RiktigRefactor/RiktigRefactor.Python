@@ -1,0 +1,5 @@
+{
+  "refuse": "docstring-in-selection",
+  "naiveShouldFail": true,
+  "spec": ["Python §8.7 Function definitions", "Python §3.2.8 Callable types"]
+}

@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "n"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.7 Function definitions",
+    "Python §6.3.4 Calls"
+  ],
+  "notes": "a= is collected by **kw; it never names the positional-only parameter."
+}

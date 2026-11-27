@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "spec": [
+    "Python §7.11 The import statement"
+  ],
+  "notes": "A use of an imported name without as is the same name as its definition."
+}

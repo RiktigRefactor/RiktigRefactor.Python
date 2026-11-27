@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "attribute-not-supported",
+  "spec": [
+    "Python §8.8 Class definitions",
+    "Python §6.3.1 Attribute references"
+  ]
+}

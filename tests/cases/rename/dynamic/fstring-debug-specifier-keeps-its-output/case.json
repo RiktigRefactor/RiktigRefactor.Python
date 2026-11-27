@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "zz"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python feature: f-string = specifier"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "refuse": "non-local-control-flow",
+  "naiveShouldFail": true,
+  "spec": ["Python §7.6 The return statement", "Python §8.7 Function definitions"]
+}

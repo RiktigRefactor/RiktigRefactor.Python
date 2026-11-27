@@ -1,0 +1,5 @@
+{
+  "refuse": "statements-in-class-body",
+  "naiveShouldFail": true,
+  "spec": ["Python §8.8 Class definitions"]
+}

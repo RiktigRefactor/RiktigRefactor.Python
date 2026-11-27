@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "k"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.7 Function definitions",
+    "Python §8.8 Class definitions"
+  ],
+  "notes": "No call passes amount by keyword anywhere, so the method's parameter can be renamed even though calls through obj.add cannot be traced."
+}

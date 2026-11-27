@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §6.14 Lambdas",
+    "Python §8.7 Function definitions"
+  ]
+}

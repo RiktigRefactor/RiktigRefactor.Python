@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "dynamic-access-possible",
+  "spec": [
+    "Python §7.11 The import statement"
+  ],
+  "notes": "The importer gets helper by a star import, which Rename does not follow."
+}

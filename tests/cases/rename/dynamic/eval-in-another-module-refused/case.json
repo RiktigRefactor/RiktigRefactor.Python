@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "amount"
+  },
+  "refuse": "dynamic-access-possible",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.6 Interaction with dynamic features"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "item"
+  },
+  "spec": [
+    "Python §8.3 The for statement",
+    "Python §7.5 The del statement"
+  ]
+}

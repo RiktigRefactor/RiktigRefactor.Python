@@ -1,0 +1,5 @@
+{
+  "refuse": "await-in-selection",
+  "naiveShouldFail": true,
+  "spec": ["Python §6.4 Await expression", "Python §8.9 Coroutines"]
+}

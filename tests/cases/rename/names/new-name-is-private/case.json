@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "__x"
+  },
+  "refuse": "private-name",
+  "spec": [
+    "Python §2.3 Identifiers and keywords"
+  ]
+}

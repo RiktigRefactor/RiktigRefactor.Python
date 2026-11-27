@@ -1,0 +1,11 @@
+{
+  "options": {
+    "newName": "cap"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names"
+  ],
+  "notes": "The function's local cap would capture the renamed global."
+}

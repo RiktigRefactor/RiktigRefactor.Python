@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "rest"
+  },
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.7 Function definitions"
+  ],
+  "notes": "args= is collected by **kwargs; the name of *args is not a keyword."
+}

@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "1x"
+  },
+  "refuse": "invalid-identifier",
+  "spec": [
+    "Python §2.3 Identifiers and keywords"
+  ]
+}

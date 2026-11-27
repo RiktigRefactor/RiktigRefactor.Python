@@ -1,0 +1,10 @@
+{
+  "options": {
+    "newName": "err"
+  },
+  "refuse": "binding-would-change",
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §8.4 The try statement"
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "refuse": "expression-is-assignment-target",
+  "naiveShouldFail": true,
+  "spec": ["Python §7.2 Assignment statements"]
+}

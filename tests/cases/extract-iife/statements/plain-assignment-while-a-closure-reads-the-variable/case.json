@@ -1,0 +1,8 @@
+{
+  "naiveShouldFail": true,
+  "spec": [
+    "Python §4.2.2 Resolution of names",
+    "Python §7.2 Assignment statements",
+    "Python §8.7 Function definitions"
+  ]
+}

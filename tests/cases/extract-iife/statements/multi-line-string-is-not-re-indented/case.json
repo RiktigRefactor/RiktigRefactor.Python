@@ -1,0 +1,4 @@
+{
+  "naiveShouldFail": true,
+  "spec": ["Python §6.2.3 Literals", "Python §8.7 Function definitions"]
+}

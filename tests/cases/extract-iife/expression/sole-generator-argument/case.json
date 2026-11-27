@@ -1,0 +1,5 @@
+{
+  "naiveShouldFail": true,
+  "spec": ["Python §6.2.7 Generator expressions", "Python §6.3.3 Calls"],
+  "notes": "The selected generator expression includes the parentheses of the call."
+}

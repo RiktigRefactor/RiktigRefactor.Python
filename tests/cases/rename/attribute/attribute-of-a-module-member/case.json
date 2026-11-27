@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "y"
+  },
+  "refuse": "attribute-not-supported",
+  "spec": [
+    "Python §6.3.1 Attribute references"
+  ]
+}

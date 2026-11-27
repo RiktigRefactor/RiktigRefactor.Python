@@ -1,0 +1,9 @@
+{
+  "options": {
+    "newName": "Elem"
+  },
+  "spec": [
+    "Python §8.10 Type parameter lists",
+    "Python §8.8 Class definitions"
+  ]
+}
