@@ -105,8 +105,24 @@ class _Context:
         return self.workspace.files[path]
 
 
+@dataclass(frozen=True)
+class RenamePlan:
+    """A rename's edits and the symbols it renames, before the re-binding check (see `verify_rename_plan`)."""
+
+    edits: tuple[TextEdit, ...]
+    renamed_symbols: dict[Symbol, str]
+    warnings: tuple[RefactoringWarning, ...]
+
+
 @returning_refusals
 def rename(request: RenameRequest, workspace: Workspace) -> Result:
+    plan = plan_rename(request, workspace)
+    verify_rename_plan(workspace, plan)
+    return Success(workspace.root_text, plan.edits, plan.warnings)
+
+
+def plan_rename(request: RenameRequest, workspace: Workspace) -> RenamePlan:
+    """Checks every precondition except the re-binding check, and returns the edits; raises `RefusalError` to refuse."""
     file = workspace.file(request.file)
     offset = file.offset_of_position(request.position)
     bindings = analyze_workspace(workspace)
@@ -125,7 +141,7 @@ def rename(request: RenameRequest, workspace: Workspace) -> Result:
     _check_new_name(new_name)
     _check_old_names(context, occurrences)
     if old_spellings == {new_name}:
-        return Success(workspace.root_text, ())
+        return RenamePlan((), {}, ())
 
     _refuse_ambiguous_class_lookups(context, symbols)
     _refuse_dynamic_access(context, symbols, new_name)
@@ -142,18 +158,22 @@ def rename(request: RenameRequest, workspace: Workspace) -> Result:
     edits.extend(_edits_for_observable_source_text(context, occurrences))
     string_edits = _dunder_all_edits(context, symbols, new_name)
     edits.extend(string_edits.edits)
-    _verify(workspace, edits, symbols, new_name)
     warnings = _string_warnings(context, symbols, string_edits.updated_spans)
-    return Success(workspace.root_text, tuple(sorted(edits, key=_edit_order)), tuple(warnings))
+    renamed_symbols = {symbol: new_name for symbol in symbols}
+    return RenamePlan(tuple(sorted(edits, key=_edit_order)), renamed_symbols, tuple(warnings))
 
 
 def _edit_order(edit: TextEdit) -> tuple[str, int, int]:
     return edit.file, edit.start.line, edit.start.column
 
 
-def _verify(workspace: Workspace, edits: list[TextEdit], symbols: set[Symbol], new_name: str) -> None:
+def verify_rename_plan(workspace: Workspace, plan: RenamePlan) -> None:
+    """The re-binding check of a planned rename; raises `RefusalError` to refuse."""
+    if not plan.edits:
+        return
+    new_name = next(iter(plan.renamed_symbols.values()))
     try:
-        verify_edits(workspace, edits, renamed_symbols={symbol: new_name for symbol in symbols})
+        verify_edits(workspace, plan.edits, renamed_symbols=plan.renamed_symbols)
     except RefusalError as error:
         if error.code != RefusalCodes.INTERNAL_VERIFICATION_FAILED:
             raise
